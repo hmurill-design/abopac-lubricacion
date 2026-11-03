@@ -1,0 +1,480 @@
+<title>Ruta de Lubricación Abopac</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Layout concept: single-column mobile-first "field card" stack — sticky identity bar
+   with breadcrumb, large tap targets, hierarchy shown via left rail color + indent rather
+   than nested boxes, so it stays scannable on a phone screen in bright plant light. */
+:root{
+  --bg:#f3f5f7;
+  --surface:#ffffff;
+  --fg:#17212b;
+  --muted:#5b6b7a;
+  --border:#d8e0e6;
+  --accent:#1f4e78;
+  --accent-ink:#ffffff;
+  --accent-soft:#e7eef4;
+  --good-bg:#e2efda;
+  --good-fg:#375623;
+  --warn-bg:#fff2cc;
+  --warn-fg:#7f6000;
+  --pending-bg:#eceff1;
+  --pending-fg:#5b6b7a;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#11161b;
+    --surface:#182129;
+    --fg:#eef2f5;
+    --muted:#9fb0bd;
+    --border:#2a3640;
+    --accent:#5b9bd5;
+    --accent-ink:#0b1116;
+    --accent-soft:#1c2b36;
+    --good-bg:#203827;
+    --good-fg:#9fe3ae;
+    --warn-bg:#3a3114;
+    --warn-fg:#f0cf6b;
+    --pending-bg:#232d35;
+    --pending-fg:#9fb0bd;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#11161b;
+  --surface:#182129;
+  --fg:#eef2f5;
+  --muted:#9fb0bd;
+  --border:#2a3640;
+  --accent:#5b9bd5;
+  --accent-ink:#0b1116;
+  --accent-soft:#1c2b36;
+  --good-bg:#203827;
+  --good-fg:#9fe3ae;
+  --warn-bg:#3a3114;
+  --warn-fg:#f0cf6b;
+  --pending-bg:#232d35;
+  --pending-fg:#9fb0bd;
+  color-scheme:dark;
+}
+*{box-sizing:border-box;}
+body{
+  background:var(--bg);
+  color:var(--fg);
+  font-family:'Inter',system-ui,sans-serif;
+  padding-left:max(16px, env(safe-area-inset-left,0px));
+  padding-right:max(16px, env(safe-area-inset-right,0px));
+}
+body::before{
+  content:"";
+  position:fixed;
+  inset:0 0 auto;
+  height:env(safe-area-inset-top,0px);
+  z-index:10;
+  background:var(--accent);
+}
+h1,h2,h3{font-family:'Oswald',system-ui,sans-serif;font-weight:600;text-wrap:balance;margin:0;letter-spacing:.2px;}
+a{color:inherit;}
+.wrap{max-width:720px;margin:0 auto;padding-bottom:48px;}
+
+/* ---- top bar ---- */
+.topbar{
+  position:sticky;
+  top:env(safe-area-inset-top,0px);
+  z-index:5;
+  background:var(--accent);
+  color:var(--accent-ink);
+  margin:0 calc(-1 * max(16px, env(safe-area-inset-left,0px))) 0 calc(-1 * max(16px, env(safe-area-inset-right,0px)));
+  padding:10px max(16px, env(safe-area-inset-left,0px)) 10px max(16px, env(safe-area-inset-right,0px));
+  box-shadow:0 2px 8px rgba(0,0,0,.15);
+}
+.topbar-row{display:flex;align-items:center;gap:10px;max-width:720px;margin:0 auto;}
+.brand{font-family:'Oswald',system-ui,sans-serif;font-weight:700;font-size:1.05rem;letter-spacing:.3px;white-space:nowrap;}
+.brand small{display:block;font-family:'Inter',system-ui,sans-serif;font-weight:500;font-size:.62rem;letter-spacing:1.2px;text-transform:uppercase;opacity:.8;}
+.home-btn{
+  margin-left:auto;flex:0 0 auto;
+  display:flex;align-items:center;gap:6px;
+  background:rgba(255,255,255,.14);
+  border:1px solid rgba(255,255,255,.3);
+  color:inherit;border-radius:8px;
+  padding:7px 11px;font:inherit;font-size:.82rem;font-weight:600;
+  cursor:pointer;
+}
+.home-btn:hover{background:rgba(255,255,255,.22);}
+.breadcrumb{
+  margin-top:8px;display:flex;flex-wrap:wrap;gap:4px;font-size:.78rem;
+  max-width:720px;margin-left:auto;margin-right:auto;
+}
+.breadcrumb button{
+  background:none;border:none;color:inherit;font:inherit;padding:2px 2px;
+  text-decoration:underline;text-underline-offset:2px;opacity:.9;cursor:pointer;
+}
+.breadcrumb .sep{opacity:.55;}
+.breadcrumb .current{opacity:1;font-weight:600;text-decoration:none;}
+
+/* ---- search ---- */
+.search-box{margin:16px 0;position:relative;}
+.search-box input{
+  width:100%;padding:12px 14px;border-radius:10px;border:1px solid var(--border);
+  background:var(--surface);color:var(--fg);font:inherit;font-size:.95rem;
+}
+.search-box input:focus{outline:2px solid var(--accent);outline-offset:1px;}
+.search-results{
+  margin-top:8px;border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--surface);
+}
+.search-results .hit{
+  display:block;width:100%;text-align:left;padding:10px 12px;border:none;background:none;color:var(--fg);
+  font:inherit;cursor:pointer;border-bottom:1px solid var(--border);
+}
+.search-results .hit:last-child{border-bottom:none;}
+.search-results .hit:hover{background:var(--accent-soft);}
+.search-results .hit .lvl{font-size:.68rem;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);}
+.search-results .hit .nm{display:block;font-weight:600;}
+.search-empty{padding:14px;color:var(--muted);font-size:.85rem;text-align:center;}
+
+/* ---- home ---- */
+.hero{padding:22px 0 6px;}
+.hero p{color:var(--muted);margin:6px 0 0;font-size:.92rem;max-width:52ch;}
+.bodega-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px;}
+@media (max-width:480px){.bodega-grid{grid-template-columns:1fr;}}
+.bodega-card{
+  display:block;background:var(--surface);border:1px solid var(--border);border-radius:14px;
+  padding:18px;cursor:pointer;text-align:left;font:inherit;color:var(--fg);
+}
+.bodega-card h3{font-size:1.3rem;}
+.bodega-card .stat{color:var(--muted);font-size:.82rem;margin-top:6px;}
+.bodega-card .go{margin-top:14px;font-size:.82rem;font-weight:600;color:var(--accent);}
+
+/* ---- section list within bodega home ---- */
+.section-list{margin-top:10px;display:flex;flex-direction:column;gap:8px;}
+.section-list .row-btn, .equipo-pick{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:12px 14px;font:inherit;color:var(--fg);cursor:pointer;text-align:left;width:100%;
+}
+.row-btn .count, .equipo-pick .count{color:var(--muted);font-size:.78rem;white-space:nowrap;}
+.row-btn:hover, .equipo-pick:hover, .bodega-card:hover{border-color:var(--accent);}
+
+/* ---- titles ---- */
+.page-head{padding:20px 0 4px;}
+.eyebrow{font-size:.72rem;text-transform:uppercase;letter-spacing:1.2px;color:var(--accent);font-weight:700;}
+.page-head h1{font-size:1.6rem;margin-top:4px;}
+.page-head .sub{color:var(--muted);font-size:.88rem;margin-top:4px;}
+
+/* ---- equipo block inside section view ---- */
+.equipo-block{margin-top:22px;}
+.equipo-block-head{
+  display:flex;align-items:baseline;justify-content:space-between;gap:10px;
+  border-bottom:2px solid var(--accent);padding-bottom:6px;margin-bottom:10px;
+}
+.equipo-block-head h2{font-size:1.05rem;}
+.equipo-block-head a{font-size:.78rem;font-weight:600;color:var(--accent);white-space:nowrap;text-decoration:none;}
+
+/* ---- componente rows ---- */
+.comp-row{
+  display:flex;gap:12px;align-items:center;background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:10px;margin-bottom:8px;cursor:pointer;width:100%;text-align:left;font:inherit;color:var(--fg);
+}
+.comp-row:hover{border-color:var(--accent);}
+.comp-thumb{
+  width:52px;height:52px;border-radius:8px;object-fit:cover;flex:0 0 auto;background:var(--pending-bg);
+  border:1px solid var(--border);
+}
+.comp-thumb.ph{display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:1.3rem;}
+.comp-main{min-width:0;flex:1 1 auto;}
+.comp-main .nm{font-weight:600;font-size:.92rem;display:block;}
+.comp-main .meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;align-items:center;}
+.badge{
+  display:inline-block;padding:2px 8px;border-radius:999px;font-size:.68rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:.4px;white-space:nowrap;
+}
+.badge.good{background:var(--good-bg);color:var(--good-fg);}
+.badge.warn{background:var(--warn-bg);color:var(--warn-fg);}
+.badge.pending{background:var(--pending-bg);color:var(--pending-fg);}
+.meta .oil{font-size:.78rem;color:var(--muted);}
+.chev{flex:0 0 auto;color:var(--muted);font-size:1.1rem;}
+
+/* ---- componente detail view ---- */
+.detail-photo{
+  width:100%;border-radius:14px;overflow:hidden;background:var(--pending-bg);border:1px solid var(--border);
+  aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;
+}
+.detail-photo img{width:100%;height:100%;object-fit:cover;display:block;}
+.detail-photo.ph{color:var(--muted);font-size:2.4rem;}
+.detail-id{font-size:.72rem;color:var(--muted);margin-top:8px;font-variant-numeric:tabular-nums;letter-spacing:.3px;}
+.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px;}
+@media (max-width:420px){.field-grid{grid-template-columns:1fr;}}
+.field{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 14px;}
+.field .k{font-size:.68rem;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);font-weight:700;}
+.field .v{margin-top:4px;font-size:1.02rem;font-weight:600;}
+.field .v.pending{color:var(--muted);font-weight:500;font-style:italic;font-size:.9rem;}
+.field.freq .v{display:inline-block;}
+
+.detail-links{display:flex;flex-direction:column;gap:8px;margin-top:20px;}
+.detail-links a{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  background:var(--accent-soft);border:1px solid var(--border);border-radius:10px;
+  padding:12px 14px;text-decoration:none;color:var(--fg);font-weight:600;font-size:.88rem;
+}
+
+.not-found{padding:40px 0;text-align:center;color:var(--muted);}
+
+footer{margin-top:34px;padding-top:14px;border-top:1px solid var(--border);color:var(--muted);font-size:.74rem;text-align:center;}
+[hidden]{display:none!important;}
+</style>
+
+<div class="wrap">
+  <div class="topbar">
+    <div class="topbar-row">
+      <div class="brand">Abopac <small>Ruta de lubricación · Pico &amp; Liasa</small></div>
+      <button class="home-btn" id="homeBtn" type="button">⌂ Inicio</button>
+    </div>
+    <nav class="breadcrumb" id="breadcrumb"></nav>
+  </div>
+
+  <div class="search-box">
+    <input id="searchInput" type="search" placeholder="Buscar sección, equipo o componente…" autocomplete="off">
+    <div class="search-results" id="searchResults" hidden></div>
+  </div>
+
+  <main id="view"></main>
+
+  <footer>Estudio de Lubricación 2025 · Abopac · Generado por Pico &amp; Liasa</footer>
+</div>
+
+<script>
+const DATA = {"bodega1":{"nombre":"Bodega 1","secciones":[{"id":"AB1-S01","name":"Planta de líquidos","top_row":2,"equipo_ids":["AB1-E01"]},{"id":"AB1-S02","name":"Torre 2","top_row":6,"equipo_ids":["AB1-E02","AB1-E03","AB1-E04","AB1-E05","AB1-E06","AB1-E07"]},{"id":"AB1-S03","name":"Torre 1","top_row":20,"equipo_ids":["AB1-E08","AB1-E09","AB1-E10","AB1-E11","AB1-E12","AB1-E13"]},{"id":"AB1-S04","name":"Torre 3","top_row":33,"equipo_ids":["AB1-E14","AB1-E15","AB1-E16"]},{"id":"AB1-S05","name":"Torre 4","top_row":39,"equipo_ids":["AB1-E17","AB1-E18"]},{"id":"AB1-S06","name":"Bandas de línea","top_row":43,"equipo_ids":["AB1-E19","AB1-E20","AB1-E21"]}],"equipos":[{"id":"AB1-E01","name":"Planta de líquido","top_row":2,"section_id":"AB1-S01","componente_ids":["AB1-C001","AB1-C002","AB1-C003","AB1-C004"]},{"id":"AB1-E02","name":"Mezcladores 1 y 2","top_row":6,"section_id":"AB1-S02","componente_ids":["AB1-C005","AB1-C006","AB1-C007"]},{"id":"AB1-E03","name":"Bandas horizontales debajo de mezcladores","top_row":9,"section_id":"AB1-S02","componente_ids":["AB1-C008","AB1-C009"]},{"id":"AB1-E04","name":"Bandas hacia elevadores 1 y 2","top_row":11,"section_id":"AB1-S02","componente_ids":["AB1-C010","AB1-C011"]},{"id":"AB1-E05","name":"Banda inclinada larga","top_row":13,"section_id":"AB1-S02","componente_ids":["AB1-C012","AB1-C013"]},{"id":"AB1-E06","name":"Elevador torre 2 y 3","top_row":15,"section_id":"AB1-S02","componente_ids":["AB1-C014","AB1-C015"]},{"id":"AB1-E07","name":"Molino 2 y 3","top_row":17,"section_id":"AB1-S02","componente_ids":["AB1-C016","AB1-C017","AB1-C018"]},{"id":"AB1-E08","name":"Molino","top_row":20,"section_id":"AB1-S03","componente_ids":["AB1-C019","AB1-C020"]},{"id":"AB1-E09","name":"Mezclador","top_row":22,"section_id":"AB1-S03","componente_ids":["AB1-C021","AB1-C022","AB1-C023","AB1-C024"]},{"id":"AB1-E10","name":"Elevador de Cangiliones","top_row":26,"section_id":"AB1-S03","componente_ids":["AB1-C025","AB1-C026"]},{"id":"AB1-E11","name":"Araña Parte superior","top_row":28,"section_id":"AB1-S03","componente_ids":["AB1-C027"]},{"id":"AB1-E12","name":"Araña Parte inferior","top_row":29,"section_id":"AB1-S03","componente_ids":["AB1-C028"]},{"id":"AB1-E13","name":"Wincher de la torre","top_row":30,"section_id":"AB1-S03","componente_ids":["AB1-C029","AB1-C030","AB1-C031"]},{"id":"AB1-E14","name":"Molino","top_row":33,"section_id":"AB1-S04","componente_ids":["AB1-C032","AB1-C033"]},{"id":"AB1-E15","name":"Mezclador","top_row":35,"section_id":"AB1-S04","componente_ids":["AB1-C034","AB1-C035"]},{"id":"AB1-E16","name":"Elevador","top_row":37,"section_id":"AB1-S04","componente_ids":["AB1-C036","AB1-C037"]},{"id":"AB1-E17","name":"Molino","top_row":39,"section_id":"AB1-S05","componente_ids":["AB1-C038","AB1-C039"]},{"id":"AB1-E18","name":"Elevador","top_row":41,"section_id":"AB1-S05","componente_ids":["AB1-C040","AB1-C041"]},{"id":"AB1-E19","name":"Banda Mariposa","top_row":43,"section_id":"AB1-S06","componente_ids":["AB1-C042","AB1-C043","AB1-C044","AB1-C045","AB1-C046"]},{"id":"AB1-E20","name":"Banda Transportadora Caballo","top_row":48,"section_id":"AB1-S06","componente_ids":["AB1-C047","AB1-C048","AB1-C049"]},{"id":"AB1-E21","name":"Banda Cosedora","top_row":51,"section_id":"AB1-S06","componente_ids":["AB1-C050","AB1-C051","AB1-C052"]}],"componentes":[{"id":"AB1-C001","equipo_id":"AB1-E01","section_id":"AB1-S01","nombre":"Reductor de reactor de líquido","aceite":"Mobilgear 600 XP 220","cantidad":"1 galon","frecuencia":"revisión semanal","image":true},{"id":"AB1-C002","equipo_id":"AB1-E01","section_id":"AB1-S01","nombre":"Motoreductor de elevador de líquidos","aceite":"Mobilgear 600 XP 220","cantidad":"3 cuartos ","frecuencia":"revisión semanal","image":true},{"id":"AB1-C003","equipo_id":"AB1-E01","section_id":"AB1-S01","nombre":"Muñoneras (2)","aceite":"Mobilgrease XHP 222","cantidad":"2 bombazos","frecuencia":"revisión semanal","image":true},{"id":"AB1-C004","equipo_id":"AB1-E01","section_id":"AB1-S01","nombre":"Bombas de trasiego Goulds Pump 3X4-8G","aceite":null,"cantidad":null,"frecuencia":null,"image":true},{"id":"AB1-C005","equipo_id":"AB1-E02","section_id":"AB1-S02","nombre":"Reductor de Mezclador","aceite":"Mobilgear 600 XP 220","cantidad":"5 galones","frecuencia":"revisión semanal","image":true},{"id":"AB1-C006","equipo_id":"AB1-E02","section_id":"AB1-S02","nombre":"Elevador","aceite":"Mobilgear 600 XP 220","cantidad":"1 cuarto","frecuencia":"revisión semanal","image":true},{"id":"AB1-C007","equipo_id":"AB1-E02","section_id":"AB1-S02","nombre":"Muñoneras (2)","aceite":"Mobilgrease XHP 222","cantidad":"8 bombazos arriba.        5 bombazos abajo","frecuencia":"revisión semanal","image":true},{"id":"AB1-C008","equipo_id":"AB1-E03","section_id":"AB1-S02","nombre":"Reductores","aceite":"Mobilgear 600 XP 220","cantidad":"medio galon","frecuencia":"revisión semanal","image":true},{"id":"AB1-C009","equipo_id":"AB1-E03","section_id":"AB1-S02","nombre":"Muñoneras","aceite":"Mobilgrease XHP 222","cantidad":"5 bombazos","frecuencia":"revisión semanal","image":false},{"id":"AB1-C010","equipo_id":"AB1-E04","section_id":"AB1-S02","nombre":"Reductores","aceite":"Mobilgear 600 XP 220","cantidad":"1 cuarto","frecuencia":"revisión semanal","image":true},{"id":"AB1-C011","equipo_id":"AB1-E04","section_id":"AB1-S02","nombre":"Muñoneras","aceite":"Mobilgrease XHP 222","cantidad":"5 bombazos","frecuencia":"revisión semanal","image":false},{"id":"AB1-C012","equipo_id":"AB1-E05","section_id":"AB1-S02","nombre":"Reductores","aceite":"Mobilgear 600 XP 220","cantidad":"2 galones","frecuencia":"revisión semanal","image":true},{"id":"AB1-C013","equipo_id":"AB1-E05","section_id":"AB1-S02","nombre":"Muñoneras","aceite":"Mobilgrease XHP 222","cantidad":"3 bombazos","frecuencia":"quincenal","image":false},{"id":"AB1-C014","equipo_id":"AB1-E06","section_id":"AB1-S02","nombre":"Reductores","aceite":"Mobilgear 600 XP 220","cantidad":"2 galones y medio","frecuencia":"revisión semanal","image":true},{"id":"AB1-C015","equipo_id":"AB1-E06","section_id":"AB1-S02","nombre":"Muñoneras","aceite":"Mobilgrease XHP 222","cantidad":"10 bombazos","frecuencia":"revisión semanal","image":false},{"id":"AB1-C016","equipo_id":"AB1-E07","section_id":"AB1-S02","nombre":"Reductores","aceite":"Mobilgear 600 XP 220","cantidad":"2 galones y medio","frecuencia":"revisión semanal","image":true},{"id":"AB1-C017","equipo_id":"AB1-E07","section_id":"AB1-S02","nombre":"Muñoneras bipartidas lado reductor","aceite":"Mobilgrease XHP 222","cantidad":"10 bombazos","frecuencia":"revisión semanal","image":true},{"id":"AB1-C018","equipo_id":"AB1-E07","section_id":"AB1-S02","nombre":"Muñoneras bipartidas lado motor","aceite":"Mobilgrease XHP 222","cantidad":"10 bombazos","frecuencia":"revisión semanal","image":false},{"id":"AB1-C019","equipo_id":"AB1-E08","section_id":"AB1-S03","nombre":"Reductor","aceite":"Mobilgear 600 XP 220","cantidad":"2 galones y medio","frecuencia":"revisión semanal","image":true},{"id":"AB1-C020","equipo_id":"AB1-E08","section_id":"AB1-S03","nombre":"Muñoneras bipartidas lado motor","aceite":"Mobilgrease XHP 222","cantidad":"10 bombazos","frecuencia":"revisión semanal","image":true},{"id":"AB1-C021","equipo_id":"AB1-E09","section_id":"AB1-S03","nombre":"Reductor 1 y 2","aceite":"Mobilgear 600 XP 460","cantidad":"12 galones","frecuencia":"revisión semanal","image":true},{"id":"AB1-C022","equipo_id":"AB1-E09","section_id":"AB1-S03","nombre":"Reductor 3 y 4","aceite":"Mobilgear 600 XP 150","cantidad":"3 cuartos ","frecuencia":"revisión semanal","image":false},{"id":"AB1-C023","equipo_id":"AB1-E09","section_id":"AB1-S03","nombre":"Muñoneras bipartidas lado motor","aceite":"Mobilgrease XHP 222","cantidad":"12 bombazos","frecuencia":"revisión semanal","image":false},{"id":"AB1-C024","equipo_id":"AB1-E09","section_id":"AB1-S03","nombre":"Muñoneras bipartidas lado reductor","aceite":"Mobilgrease XHP 222","cantidad":"12 bombazos","frecuencia":"revisión semanal","image":false},{"id":"AB1-C025","equipo_id":"AB1-E10","section_id":"AB1-S03","nombre":"Reductor","aceite":"Mobilgear 600 XP 220","cantidad":"5 galones","frecuencia":"revisión semanal","image":true},{"id":"AB1-C026","equipo_id":"AB1-E10","section_id":"AB1-S03","nombre":"Muñoneras","aceite":"Mobilgrease XHP 222","cantidad":"35 bombazos","frecuencia":"revisión semanal","image":false},{"id":"AB1-C027","equipo_id":"AB1-E11","section_id":"AB1-S03","nombre":"Muñoneras","aceite":"Mobilgrease XHP 222","cantidad":"3 bombazos","frecuencia":"revisión semanal","image":true},{"id":"AB1-C028","equipo_id":"AB1-E12","section_id":"AB1-S03","nombre":"Muñoneras","aceite":"Mobilgrease XHP 222","cantidad":"3 bombazos","frecuencia":"revisión semanal","image":true},{"id":"AB1-C029","equipo_id":"AB1-E13","section_id":"AB1-S03","nombre":"Reductor","aceite":"Mobilgear 600 XP 220","cantidad":"5 galones","frecuencia":"revisión semanal","image":true},{"id":"AB1-C030","equipo_id":"AB1-E13","section_id":"AB1-S03","nombre":"Muñoneras","aceite":"Mobilgrease XHP 222","cantidad":"4 bombazos","frecuencia":"revisión semanal","image":false},{"id":"AB1-C031","equipo_id":"AB1-E13","section_id":"AB1-S03","nombre":"Cadena","aceite":"FK220","cantidad":null,"frecuencia":"revisión quincenal","image":false},{"id":"AB1-C032","equipo_id":"AB1-E14","section_id":"AB1-S04","nombre":"Reductor","aceite":"Mobilgear 600 XP 220","cantidad":"2 galones y medio","frecuencia":"revisión semanal","image":true},{"id":"AB1-C033","equipo_id":"AB1-E14","section_id":"AB1-S04","nombre":"Muñoneras","aceite":"Mobilgrease XHP 222","cantidad":"6 bombazos","frecuencia":"revisión semanal","image":false},{"id":"AB1-C034","equipo_id":"AB1-E15","section_id":"AB1-S04","nombre":"Reductor","aceite":"Mobilgear 600 XP 460","cantidad":"2 galones","frecuencia":"revisión semanal","image":true},{"id":"AB1-C035","equipo_id":"AB1-E15","section_id":"AB1-S04","nombre":"muñoneras","aceite":"Mobilgrease XHP 222","cantidad":"6 bombazos","frecuencia":"revisión semanal","image":false},{"id":"AB1-C036","equipo_id":"AB1-E16","section_id":"AB1-S04","nombre":"Reductor","aceite":"Mobilgear 600 XP 220","cantidad":"2 galones","frecuencia":"revisión semanal","image":false},{"id":"AB1-C037","equipo_id":"AB1-E16","section_id":"AB1-S04","nombre":"Muñoneras","aceite":"Mobilgrease XHP 222","cantidad":"5 bombazos","frecuencia":"revisión semanal","image":false},{"id":"AB1-C038","equipo_id":"AB1-E17","section_id":"AB1-S05","nombre":"Reductor","aceite":"Mobilgear 600 XP 220","cantidad":"2 galones y medio","frecuencia":"revisión semanal","image":false},{"id":"AB1-C039","equipo_id":"AB1-E17","section_id":"AB1-S05","nombre":"Muñoneras","aceite":"Mobilgrease XHP 222","cantidad":"6 bombazos","frecuencia":"revisión semanal","image":false},{"id":"AB1-C040","equipo_id":"AB1-E18","section_id":"AB1-S05","nombre":"Reductor","aceite":"Mobilgear 600 XP 220","cantidad":"2 galones","frecuencia":"revisión semanal","image":false},{"id":"AB1-C041","equipo_id":"AB1-E18","section_id":"AB1-S05","nombre":"Muñoneras","aceite":"Mobilgrease XHP 222","cantidad":"5 bombazos","frecuencia":"revisión semanal","image":false},{"id":"AB1-C042","equipo_id":"AB1-E19","section_id":"AB1-S06","nombre":"Reductor","aceite":null,"cantidad":null,"frecuencia":null,"image":true},{"id":"AB1-C043","equipo_id":"AB1-E19","section_id":"AB1-S06","nombre":"Cadena de transmisión","aceite":null,"cantidad":null,"frecuencia":null,"image":true},{"id":"AB1-C044","equipo_id":"AB1-E19","section_id":"AB1-S06","nombre":"Muñoneras","aceite":null,"cantidad":null,"frecuencia":null,"image":false},{"id":"AB1-C045","equipo_id":"AB1-E19","section_id":"AB1-S06","nombre":"Cilindro hidráulico de elevación","aceite":null,"cantidad":null,"frecuencia":null,"image":true},{"id":"AB1-C046","equipo_id":"AB1-E19","section_id":"AB1-S06","nombre":"Cilindro y eje de accionamiento lateral","aceite":null,"cantidad":null,"frecuencia":null,"image":true},{"id":"AB1-C047","equipo_id":"AB1-E20","section_id":"AB1-S06","nombre":"Reductor","aceite":null,"cantidad":null,"frecuencia":null,"image":false},{"id":"AB1-C048","equipo_id":"AB1-E20","section_id":"AB1-S06","nombre":"Muñoneras y rodillos","aceite":null,"cantidad":null,"frecuencia":null,"image":true},{"id":"AB1-C049","equipo_id":"AB1-E20","section_id":"AB1-S06","nombre":"Unidad hidráulica","aceite":null,"cantidad":null,"frecuencia":null,"image":true},{"id":"AB1-C050","equipo_id":"AB1-E21","section_id":"AB1-S06","nombre":"Motorreductor","aceite":null,"cantidad":null,"frecuencia":null,"image":true},{"id":"AB1-C051","equipo_id":"AB1-E21","section_id":"AB1-S06","nombre":"Cadena de transmisión","aceite":null,"cantidad":null,"frecuencia":null,"image":false},{"id":"AB1-C052","equipo_id":"AB1-E21","section_id":"AB1-S06","nombre":"Muñoneras y rodillos","aceite":null,"cantidad":null,"frecuencia":null,"image":false}]},"bodega2":{"nombre":"Bodega 2","secciones":[],"equipos":[{"id":"AB2-E01","name":"Bandas inclinadas 1 y 2","top_row":2,"section_id":null,"componente_ids":["AB2-C001","AB2-C002","AB2-C003","AB2-C004","AB2-C005","AB2-C006","AB2-C007"]},{"id":"AB2-E02","name":"Banda Tripper","top_row":9,"section_id":null,"componente_ids":["AB2-C008","AB2-C009","AB2-C010","AB2-C011"]},{"id":"AB2-E03","name":"Bandas pequeñas fosa 1","top_row":13,"section_id":null,"componente_ids":["AB2-C012","AB2-C013","AB2-C014"]},{"id":"AB2-E04","name":"Bandas pequeñas fosa 2","top_row":16,"section_id":null,"componente_ids":["AB2-C015","AB2-C016","AB2-C017"]},{"id":"AB2-E05","name":"Bandas inclinadas a bodega 1","top_row":19,"section_id":null,"componente_ids":["AB2-C018","AB2-C019","AB2-C020","AB2-C021"]},{"id":"AB2-E06","name":"Banda longitudinal 1,2,3,4","top_row":23,"section_id":null,"componente_ids":["AB2-C022","AB2-C023","AB2-C024","AB2-C025","AB2-C026"]}],"componentes":[{"id":"AB2-C001","equipo_id":"AB2-E01","section_id":null,"nombre":"Reductor TXT7A","aceite":"Mobilgear 600 XP 220","cantidad":"8.5 Litros","frecuencia":null,"image":true},{"id":"AB2-C002","equipo_id":"AB2-E01","section_id":null,"nombre":"Muñoneras (2)","aceite":"Mobilgrease XHP 222","cantidad":null,"frecuencia":"revisión Quincenal","image":false},{"id":"AB2-C003","equipo_id":"AB2-E01","section_id":null,"nombre":"Rodillo de tracción (1)","aceite":"Mobilgrease XHP 222","cantidad":null,"frecuencia":"revisión Quincenal","image":false},{"id":"AB2-C004","equipo_id":"AB2-E01","section_id":null,"nombre":"Rodillo conducido (3)","aceite":"Mobilgrease XHP 222","cantidad":null,"frecuencia":"revisión Quincenal","image":false},{"id":"AB2-C005","equipo_id":"AB2-E01","section_id":null,"nombre":"Rodillo cola (1)","aceite":"Mobilgrease XHP 222","cantidad":null,"frecuencia":"revisión Quincenal","image":false},{"id":"AB2-C006","equipo_id":"AB2-E01","section_id":null,"nombre":"Rodillo superior (1)","aceite":"Mobilgrease XHP 222","cantidad":null,"frecuencia":"revisión Quincenal","image":false},{"id":"AB2-C007","equipo_id":"AB2-E01","section_id":null,"nombre":"Rodillos de retorno (5)","aceite":"Mobilgrease XHP 222","cantidad":null,"frecuencia":"revisión Quincenal","image":false},{"id":"AB2-C008","equipo_id":"AB2-E02","section_id":null,"nombre":"Rodillo cola (1)","aceite":"Mobilgrease XHP 222","cantidad":null,"frecuencia":"revisión Quincenal","image":false},{"id":"AB2-C009","equipo_id":"AB2-E02","section_id":null,"nombre":"Carro de descarga","aceite":"Mobilgrease XHP 222","cantidad":null,"frecuencia":"revisión Quincenal","image":false},{"id":"AB2-C010","equipo_id":"AB2-E02","section_id":null,"nombre":"Rodillos","aceite":"Mobilgrease XHP 222","cantidad":null,"frecuencia":"revisión Quincenal","image":false},{"id":"AB2-C011","equipo_id":"AB2-E02","section_id":null,"nombre":"Ruedas de deslizamiento","aceite":"Mobilgrease XHP 222","cantidad":null,"frecuencia":"revisión Quincenal","image":false},{"id":"AB2-C012","equipo_id":"AB2-E03","section_id":null,"nombre":"Rodillo de cola (1)","aceite":"Mobilgrease XHP 222","cantidad":null,"frecuencia":"revisión Quincenal","image":false},{"id":"AB2-C013","equipo_id":"AB2-E03","section_id":null,"nombre":"Rodillo de tracción (1)","aceite":"Mobilgrease XHP 222","cantidad":null,"frecuencia":"revisión Quincenal","image":false},{"id":"AB2-C014","equipo_id":"AB2-E03","section_id":null,"nombre":"Reductor","aceite":"Mobilgear 600 XP 220","cantidad":"1 galón","frecuencia":null,"image":false},{"id":"AB2-C015","equipo_id":"AB2-E04","section_id":null,"nombre":"Rodillo de cola (1)","aceite":"Mobilgrease XHP 222","cantidad":null,"frecuencia":"revisión Quincenal","image":false},{"id":"AB2-C016","equipo_id":"AB2-E04","section_id":null,"nombre":"Rodillo de tracción (1)","aceite":"Mobilgrease XHP 222","cantidad":null,"frecuencia":"revisión Quincenal","image":false},{"id":"AB2-C017","equipo_id":"AB2-E04","section_id":null,"nombre":"Reductor","aceite":"Mobilgear 600 XP 220","cantidad":null,"frecuencia":null,"image":true},{"id":"AB2-C018","equipo_id":"AB2-E05","section_id":null,"nombre":"Rodillo de cola (1)","aceite":"Mobilgrease XHP 222","cantidad":null,"frecuencia":"revisión Quincenal","image":true},{"id":"AB2-C019","equipo_id":"AB2-E05","section_id":null,"nombre":"Rodillo de tracción (1)","aceite":"Mobilgrease XHP 222","cantidad":null,"frecuencia":"revisión Quincenal","image":true},{"id":"AB2-C020","equipo_id":"AB2-E05","section_id":null,"nombre":"Reductor","aceite":"Mobilgear 600 XP 460","cantidad":null,"frecuencia":null,"image":true},{"id":"AB2-C021","equipo_id":"AB2-E05","section_id":null,"nombre":"Acople","aceite":"Mobil grease XTC","cantidad":null,"frecuencia":null,"image":false},{"id":"AB2-C022","equipo_id":"AB2-E06","section_id":null,"nombre":"Motor","aceite":"Mobilgear 600 XP 460","cantidad":null,"frecuencia":null,"image":false},{"id":"AB2-C023","equipo_id":"AB2-E06","section_id":null,"nombre":"Reductor","aceite":"Mobilgrease XHP 222","cantidad":null,"frecuencia":null,"image":false},{"id":"AB2-C024","equipo_id":"AB2-E06","section_id":null,"nombre":"Rodillos de tracción (3)","aceite":"Mobilgrease XHP 222","cantidad":null,"frecuencia":"revisión Quincenal","image":false},{"id":"AB2-C025","equipo_id":"AB2-E06","section_id":null,"nombre":"Rodillo de cola (1)","aceite":"Mobilgrease XHP 222","cantidad":null,"frecuencia":"revisión Quincenal","image":false},{"id":"AB2-C026","equipo_id":"AB2-E06","section_id":null,"nombre":"Ruedas de tracción","aceite":"Mobilgrease XHP 222","cantidad":null,"frecuencia":"revisión Quincenal","image":false}]}};
+const IMG_DIR = 'images/';
+
+function esc(s){
+  if(s===null||s===undefined) return '';
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+// ---- flat indexes for fast lookup ----
+const idx = { S:{}, E:{}, C:{}, bodegaOf:{} };
+for(const bKey of ['bodega1','bodega2']){
+  const b = DATA[bKey];
+  for(const s of b.secciones){ idx.S[s.id]=s; idx.bodegaOf[s.id]=bKey; }
+  for(const e of b.equipos){ idx.E[e.id]=e; idx.bodegaOf[e.id]=bKey; }
+  for(const c of b.componentes){ idx.C[c.id]=c; idx.bodegaOf[c.id]=bKey; }
+}
+
+function freqBadge(freq){
+  if(!freq) return '<span class="badge pending">Pendiente</span>';
+  const f = freq.toLowerCase();
+  if(f.includes('semanal')) return `<span class="badge good">${esc(freq)}</span>`;
+  if(f.includes('quincenal')) return `<span class="badge warn">${esc(freq)}</span>`;
+  return `<span class="badge pending">${esc(freq)}</span>`;
+}
+
+function thumb(comp, size){
+  size = size || 52;
+  if(!comp.image) return `<div class="comp-thumb ph" style="width:${size}px;height:${size}px;">⚙</div>`;
+  return `<img class="comp-thumb" src="${IMG_DIR}${comp.id}.jpg" alt="" width="${size}" height="${size}" loading="lazy"
+    onerror="this.outerHTML='&lt;div class=&quot;comp-thumb ph&quot; style=&quot;width:${size}px;height:${size}px;&quot;&gt;⚙&lt;/div&gt;'">`;
+}
+
+function compRow(c){
+  const oil = c.aceite ? `<span class="oil">${esc(c.aceite)}</span>` : '';
+  return `
+  <button class="comp-row" data-nav="${c.id}">
+    ${thumb(c)}
+    <div class="comp-main">
+      <span class="nm">${esc(c.nombre)}</span>
+      <div class="meta">${freqBadge(c.frecuencia)} ${oil}</div>
+    </div>
+    <span class="chev">›</span>
+  </button>`;
+}
+
+function equipoBlock(e, opts){
+  opts = opts || {};
+  const comps = e.componente_ids.map(id=>idx.C[id]);
+  const head = opts.linkToEquipo
+    ? `<div class="equipo-block-head"><h2>${esc(e.name)}</h2><a href="#" data-nav="${e.id}">Ver equipo completo ›</a></div>`
+    : `<div class="equipo-block-head"><h2>${esc(e.name)}</h2><span style="font-size:.74rem;color:var(--muted);">${comps.length} componente${comps.length===1?'':'s'}</span></div>`;
+  return `<section class="equipo-block">${head}${comps.map(compRow).join('')}</section>`;
+}
+
+function render(){
+  const raw = location.hash.replace('#','').trim();
+  renderBreadcrumb(raw);
+  const view = document.getElementById('view');
+
+  if(!raw){ view.innerHTML = renderHome(); attachHome(); return; }
+
+  if(idx.C[raw]) { view.innerHTML = renderComponente(idx.C[raw]); }
+  else if(idx.E[raw]) { view.innerHTML = renderEquipo(idx.E[raw]); }
+  else if(idx.S[raw]) { view.innerHTML = renderSeccion(idx.S[raw]); }
+  else if(raw==='bodega1'||raw==='bodega2'){ view.innerHTML = renderBodega(raw); }
+  else { view.innerHTML = `<div class="not-found"><h2>No encontramos ese código</h2><p style="margin-top:8px;">Puede que el equipo haya cambiado de ubicación. Usa el buscador arriba.</p></div>`; }
+
+  attachNav();
+}
+
+function renderBreadcrumb(raw){
+  const el = document.getElementById('breadcrumb');
+  const crumbs = [];
+  let bKey = null, s=null, e=null, c=null;
+  if(idx.C[raw]){ c = idx.C[raw]; bKey = idx.bodegaOf[c.id]; e = idx.E[c.equipo_id]; s = c.section_id ? idx.S[c.section_id] : null; }
+  else if(idx.E[raw]){ e = idx.E[raw]; bKey = idx.bodegaOf[e.id]; s = e.section_id ? idx.S[e.section_id] : null; }
+  else if(idx.S[raw]){ s = idx.S[raw]; bKey = idx.bodegaOf[s.id]; }
+  else if(raw==='bodega1'||raw==='bodega2'){ bKey = raw; }
+
+  if(!bKey){ el.innerHTML=''; return; }
+  crumbs.push(`<button data-nav="${bKey}">${DATA[bKey].nombre}</button>`);
+  if(s) crumbs.push(`<button data-nav="${s.id}">${esc(s.name)}</button>`);
+  if(e) crumbs.push(`<button data-nav="${e.id}">${esc(e.name)}</button>`);
+  if(c) crumbs.push(`<span class="current">${esc(c.nombre)}</span>`);
+
+  el.innerHTML = crumbs.map((x,i)=> i===0? x : `<span class="sep">/</span>${x}`).join('');
+}
+
+function renderHome(){
+  const b1 = DATA.bodega1, b2 = DATA.bodega2;
+  return `
+  <div class="hero">
+    <div class="eyebrow">Abopac</div>
+    <h1>Ruta de lubricación</h1>
+    <p>Escanea el código QR pegado en el equipo, o busca aquí la sección, el equipo o el componente que necesitas revisar.</p>
+  </div>
+  <div class="bodega-grid">
+    <button class="bodega-card" data-nav="bodega1">
+      <h3>${b1.nombre}</h3>
+      <div class="stat">${b1.secciones.length} secciones · ${b1.equipos.length} equipos · ${b1.componentes.length} componentes</div>
+      <div class="go">Ver recorrido ›</div>
+    </button>
+    <button class="bodega-card" data-nav="bodega2">
+      <h3>${b2.nombre}</h3>
+      <div class="stat">${b2.equipos.length} equipos · ${b2.componentes.length} componentes</div>
+      <div class="go">Ver recorrido ›</div>
+    </button>
+  </div>`;
+}
+
+function renderBodega(bKey){
+  const b = DATA[bKey];
+  let body = '';
+  if(b.secciones.length){
+    body = `<div class="section-list">` + b.secciones.map(s=>{
+      const nComp = s.equipo_ids.reduce((n,eid)=>n+idx.E[eid].componente_ids.length,0);
+      return `<button class="row-btn" data-nav="${s.id}"><span>${esc(s.name)}</span><span class="count">${s.equipo_ids.length} equipos · ${nComp} comp.</span></button>`;
+    }).join('') + `</div>`;
+  } else {
+    body = `<div class="section-list">` + b.equipos.map(e=>{
+      return `<button class="row-btn" data-nav="${e.id}"><span>${esc(e.name)}</span><span class="count">${e.componente_ids.length} comp.</span></button>`;
+    }).join('') + `</div>`;
+  }
+  return `
+  <div class="page-head">
+    <div class="eyebrow">Abopac</div>
+    <h1>${esc(b.nombre)}</h1>
+    <div class="sub">${b.secciones.length ? 'Selecciona una sección' : 'Selecciona un equipo'}</div>
+  </div>
+  ${body}`;
+}
+
+function renderSeccion(s){
+  const bKey = idx.bodegaOf[s.id];
+  const b = DATA[bKey];
+  const equipos = s.equipo_ids.map(id=>idx.E[id]);
+  const nComp = equipos.reduce((n,e)=>n+e.componente_ids.length,0);
+  return `
+  <div class="page-head">
+    <div class="eyebrow">${esc(b.nombre)}</div>
+    <h1>${esc(s.name)}</h1>
+    <div class="sub">${equipos.length} equipos · ${nComp} componentes en esta sección</div>
+  </div>
+  ${equipos.map(e=>equipoBlock(e,{linkToEquipo:true})).join('')}`;
+}
+
+function renderEquipo(e){
+  const bKey = idx.bodegaOf[e.id];
+  const b = DATA[bKey];
+  const s = e.section_id ? idx.S[e.section_id] : null;
+  const comps = e.componente_ids.map(id=>idx.C[id]);
+  return `
+  <div class="page-head">
+    <div class="eyebrow">${esc(b.nombre)}${s?' · '+esc(s.name):''}</div>
+    <h1>${esc(e.name)}</h1>
+    <div class="sub">${comps.length} componente${comps.length===1?'':'s'} a lubricar</div>
+  </div>
+  <section class="equipo-block" style="margin-top:14px;">
+    ${comps.map(compRow).join('')}
+  </section>
+  ${s?`<div class="detail-links"><a href="#" data-nav="${s.id}"><span>Ver toda la sección ${esc(s.name)}</span><span>›</span></a></div>`:''}`;
+}
+
+function renderComponente(c){
+  const bKey = idx.bodegaOf[c.id];
+  const b = DATA[bKey];
+  const e = idx.E[c.equipo_id];
+  const s = c.section_id ? idx.S[c.section_id] : null;
+  const photo = c.image
+    ? `<div class="detail-photo"><img src="${IMG_DIR}${c.id}.jpg" alt="${esc(c.nombre)}" loading="lazy"
+        onerror="this.closest('.detail-photo').outerHTML='&lt;div class=&quot;detail-photo ph&quot;&gt;⚙&lt;/div&gt;'"></div>`
+    : `<div class="detail-photo ph">⚙</div>`;
+
+  const cantidadV = c.cantidad ? `<div class="v">${esc(c.cantidad)}</div>` : `<div class="v pending">Sin definir</div>`;
+  const aceiteV = c.aceite ? `<div class="v">${esc(c.aceite)}</div>` : `<div class="v pending">Sin definir</div>`;
+
+  return `
+  <div class="page-head" style="padding-top:14px;">
+    <div class="eyebrow">${esc(b.nombre)}${s?' · '+esc(s.name):''} · ${esc(e.name)}</div>
+    <h1>${esc(c.nombre)}</h1>
+  </div>
+  ${photo}
+  <div class="detail-id">ID ${esc(c.id)}</div>
+  <div class="field-grid">
+    <div class="field"><div class="k">Lubricante</div>${aceiteV}</div>
+    <div class="field"><div class="k">Cantidad</div>${cantidadV}</div>
+    <div class="field freq"><div class="k">Frecuencia</div><div class="v">${freqBadge(c.frecuencia)}</div></div>
+    <div class="field"><div class="k">Equipo</div><div class="v" style="font-size:.9rem;">${esc(e.name)}</div></div>
+  </div>
+  <div class="detail-links">
+    <a href="#" data-nav="${e.id}"><span>Ver equipo completo — ${esc(e.name)}</span><span>›</span></a>
+    ${s?`<a href="#" data-nav="${s.id}"><span>Ver sección completa — ${esc(s.name)}</span><span>›</span></a>`:''}
+  </div>`;
+}
+
+function attachNav(){
+  document.querySelectorAll('[data-nav]').forEach(el=>{
+    el.addEventListener('click', ev=>{
+      ev.preventDefault();
+      location.hash = el.getAttribute('data-nav');
+      window.scrollTo({top:0, behavior:'instant'});
+    });
+  });
+}
+function attachHome(){ attachNav(); }
+
+document.getElementById('homeBtn').addEventListener('click', ()=>{ location.hash=''; window.scrollTo({top:0}); render(); });
+window.addEventListener('hashchange', render);
+
+// ---- search ----
+const allEntities = [];
+for(const bKey of ['bodega1','bodega2']){
+  const b = DATA[bKey];
+  for(const s of b.secciones) allEntities.push({id:s.id, nombre:s.name, nivel:'Sección', bodega:b.nombre});
+  for(const e of b.equipos) allEntities.push({id:e.id, nombre:e.name, nivel:'Equipo', bodega:b.nombre});
+  for(const c of b.componentes) allEntities.push({id:c.id, nombre:c.nombre, nivel:'Componente', bodega:b.nombre});
+}
+const searchInput = document.getElementById('searchInput');
+const searchResults = document.getElementById('searchResults');
+searchInput.addEventListener('input', ()=>{
+  const q = searchInput.value.trim().toLowerCase();
+  if(!q){ searchResults.hidden = true; searchResults.innerHTML=''; return; }
+  const hits = allEntities.filter(x=>x.nombre.toLowerCase().includes(q)).slice(0,12);
+  searchResults.hidden = false;
+  searchResults.innerHTML = hits.length
+    ? hits.map(h=>`<button class="hit" data-nav="${h.id}"><span class="lvl">${h.nivel} · ${h.bodega}</span><span class="nm">${esc(h.nombre)}</span></button>`).join('')
+    : `<div class="search-empty">Sin resultados</div>`;
+  attachNav();
+});
+
+render();
+</script>
